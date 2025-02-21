@@ -80,5 +80,40 @@ exports.getActorsWithMultipleCharacters = async (req, res, next) => {
 
 
 exports.getCharactersWithMultipleActors = async (req, res, next) => {
+    const characterActors = {};
+    const numOfActorsByCharacter= {};
 
+    await Promise.all(Object.entries(movies).map(async (movie) => {
+        const movieName = movie[0];
+        const cast = await fetchMovieCast(movie);
+
+        cast.forEach((actor) => {
+                const actorName = actor.name;
+                if (actors.includes(actorName)) {
+                    const characters = actor.character.split(' / ');
+                    characters.forEach(character => {
+                        if (!characterActors[character]) {
+                            characterActors[character] = [];
+                        }
+                        characterActors[character].push({movieName, actorName});
+                        if(!numOfActorsByCharacter[character]){
+                            numOfActorsByCharacter[character] = [];
+                        }
+                        if (!numOfActorsByCharacter[character].includes(actorName)) {
+                            numOfActorsByCharacter[character].push(actorName);
+                        }
+                    });
+                }
+            }
+        );
+    }));
+
+    const result = {};
+    for (const character in numOfActorsByCharacter) {
+        if (numOfActorsByCharacter[character].length > 1) {
+            result[character] = characterActors[character];
+        }
+    }
+
+    res.status(200).json(result);
 }

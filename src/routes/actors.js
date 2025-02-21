@@ -7,7 +7,7 @@ router.get('/moviesPerActor', ActorsController.getMoviesPerActor);
 
 router.get('/actorsWithMultipleCharacters', ActorsController.getActorsWithMultipleCharacters)
 
-router.get('/charactersWithMultipleActors', ActorsController.getActorsWithMultipleCharacters)
+router.get('/charactersWithMultipleActors', ActorsController.getCharactersWithMultipleActors)
 
 
 module.exports = router;
