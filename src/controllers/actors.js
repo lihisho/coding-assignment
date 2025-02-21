@@ -48,7 +48,34 @@ exports.getMoviesPerActor = async (req, res, next) => {
 }
 
 exports.getActorsWithMultipleCharacters = async (req, res, next) => {
+    const actorCharacters = {};
 
+    await Promise.all(Object.entries(movies).map(async (movie) => {
+        const movieName = movie[0];
+        const cast = await fetchMovieCast(movie);
+
+        cast.forEach((actor) => {
+                if (actors.includes(actor.name)) {
+                    const characters = actor.character.split(' / ');
+                    if (!actorCharacters[actor.name]) {
+                        actorCharacters[actor.name] = [];
+                    }
+                    characters.forEach(character => {
+                        actorCharacters[actor.name].push({movieName, character});
+                    });
+                }
+            }
+        );
+    }));
+
+    const result = {};
+    for (const actor in actorCharacters) {
+        if (actorCharacters[actor].length > 1) {
+            result[actor] = actorCharacters[actor];
+        }
+    }
+
+    res.status(200).json(result);
 }
 
 
