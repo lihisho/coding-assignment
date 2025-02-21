@@ -16,7 +16,6 @@ app.use((error, req, res, next) => {
     res.json({
         message: error.message
     })
-    next(error);
 })
 
 module.exports = app;
