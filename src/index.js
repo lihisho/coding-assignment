@@ -1,9 +1,16 @@
-const axios = require('axios').default;
+const http = require('http');
+const app = require('./app');
 
-const sayHey = (name) => {
-    return `Hey ${name}`
-}
+const port = process.env.PORT || 3000;
+
+const server = http.createServer(app);
+server.listen(port,() => {
+    console.log(`Server is listening on port ${port}`);
+} );
+
 
 module.exports = {
-    sayHey
 }
+
+
+

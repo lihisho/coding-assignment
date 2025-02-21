@@ -5,12 +5,15 @@
   "main": "src/index.js",
   "author": "Alon Kaduri <alonk@vi.co>",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "start": "nodemon src/index.js"
   },
   "devDependencies": {
-    "jest": "^28.1.0"
+    "jest": "^28.1.0",
+    "nodemon": "^3.1.9"
   },
   "dependencies": {
-    "axios": "^0.27.2"
+    "axios": "^0.27.2",
+    "express": "^4.21.2"
   }
 }
