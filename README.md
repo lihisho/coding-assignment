@@ -39,6 +39,10 @@ API_KEY=<YOUR_API_KEY> yarn start
 
 API_KEY is your key for https://developer.themoviedb.org API
 
+Optional Environment Variables:
+- PORT - port number
+- LOG_LEVEL - log level {debug, info, warn, error}
+
 
 #### Using Endpoints
 

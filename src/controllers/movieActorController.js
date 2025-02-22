@@ -6,6 +6,7 @@ const {
     getCharactersWithMultipleActors
 } = require("../services/movieService");
 
+const INTERNAL_SERVER_ERROR = new Error('Internal Server Error')
 
 exports.getMoviesPerActor = async (req, res, next) => {
     try {
@@ -13,7 +14,7 @@ exports.getMoviesPerActor = async (req, res, next) => {
         res.status(200).json(actorMovieMapping);
     } catch (error) {
         logger.warn(`Failed to fetch movies per actor: `, error);
-        return next(new Error('Internal Server Error'));
+        return next(INTERNAL_SERVER_ERROR);
     }
 };
 
@@ -23,7 +24,7 @@ exports.getActorsWithMultipleCharacters = async (req, res, next) => {
         res.status(200).json(result);
     } catch (error) {
         logger.warn(`Failed to fetch actors with multiple characters: `, error);
-        return next(new Error('Internal Server Error'));
+        return next(INTERNAL_SERVER_ERROR);
     }
 }
 
@@ -33,7 +34,7 @@ exports.getCharactersWithMultipleActors = async (req, res, next) => {
         res.status(200).json(result);
     } catch (error) {
         logger.warn(`Failed to fetch characters with multiple actors: `, error);
-        return next(new Error('Internal Server Error'));
+        return next(INTERNAL_SERVER_ERROR);
     }
 }
 

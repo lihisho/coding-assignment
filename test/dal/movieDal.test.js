@@ -42,6 +42,4 @@ test('fetches data from movie/${movieId}/credits endpoint with a movie that does
     }
     expect(isError).toBeTruthy();
 });
-
-//TODO add test for cache
 //endregion

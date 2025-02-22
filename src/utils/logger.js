@@ -1,6 +1,6 @@
 const winston = require('winston');
 const {createLogger, format, transports} = winston;
-const {combine, timestamp, printf, colorize, json, errors} = format;
+const {combine, timestamp, printf, colorize, errors} = format;
 
 const logger = createLogger({
     level: process.env.LOG_LEVEL || 'info',
