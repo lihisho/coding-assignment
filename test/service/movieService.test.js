@@ -1,8 +1,9 @@
-const {mockFetchMovieCastDataMoviesPerActor} = require("./mockFetchMovieCastDataMoviesPerActor");
-const {getMoviesPerActor, getActorsWithMultipleCharacters} = require("../../src/services/movieService");
+const {mockFetchMovieCastDataMoviesPerActor} = require("./mockData/mockFetchMovieCastDataMoviesPerActor");
+const {getMoviesPerActor, getActorsWithMultipleCharacters, getCharactersWithMultipleActors} = require("../../src/services/movieService");
 const {fetchMovieCast} = require("../../src/dal/movieDal");
-const {mockFetchMovieCastDataActorCharacters} = require("./mockFetchMovieCastDataActorCharacters");
-const {mockFetchMovieCastDataMoviesPerActorMissingMovie} = require("./mockFetchMovieCastDataMoviesPerActorMissingMovie");
+const {mockFetchMovieCastDataActorCharacters} = require("./mockData/mockFetchMovieCastDataActorCharacters");
+const {mockFetchMovieCastDataMoviesPerActorMissingMovie} = require("./mockData/mockFetchMovieCastDataMoviesPerActorMissingMovie");
+const {mockFetchMovieCastDataCharacterActors} = require("./mockData/mockFetchMovieCastDataCharacterActors");
 
 //refion setup
 const movies = {
@@ -52,16 +53,6 @@ test('fetches movies per actor', async () => {
 });
 
 test('fetches movies per actor when one movie doesnt exist in data', async () => {
-    const actorMovieMapping = {
-        "actor 1":[
-            "Test movie 1",
-            "Test movie 2"
-        ],
-        "actor 2":[
-            "Test movie 1"
-        ]
-    }
-
     fetchMovieCast.mockImplementation((movieId) => {
             if (mockFetchMovieCastDataMoviesPerActorMissingMovie.hasOwnProperty(movieId)) {
                 return Promise.resolve(mockFetchMovieCastDataMoviesPerActorMissingMovie[movieId])
@@ -70,7 +61,7 @@ test('fetches movies per actor when one movie doesnt exist in data', async () =>
         }
     );
     try{
-        const result = await getMoviesPerActor(movies,actors);
+        await getMoviesPerActor(movies,actors);
     }
     catch (error){
         isError = true;
@@ -79,7 +70,7 @@ test('fetches movies per actor when one movie doesnt exist in data', async () =>
 });
 
 test('fetches actors with multiple characters', async () => {
-    const characterActors = {
+    const actorCharacters = {
         "actor 1":[
             {movieName: "Test movie 1", characterName: "Char1"},
             {movieName: "Test movie 1", characterName: "Char2"},
@@ -98,9 +89,33 @@ test('fetches actors with multiple characters', async () => {
     const result = await getActorsWithMultipleCharacters(movies,actors);
 
     //tests split characters
-    //return only if has more than 1 character
-    expect(result).toEqual(characterActors);
+    expect(result).toEqual(actorCharacters);
     expect(result["actor 4"]).toBeUndefined();
+});
+
+test('fetches characters with multiple actors', async () => {
+    const characterActors = {
+        "Char1":[
+            {movieName: "Test movie 1", actorName: "actor 1"},
+            {movieName: "Test movie 2", actorName: "actor 2"},
+            {movieName: "Test movie 4", actorName: "actor 2"}
+        ],
+        "Char2":[
+            {movieName: "Test movie 1", actorName: "actor 1"},
+            {movieName: "Test movie 4", actorName: "actor 4"},
+        ]
+    }
+
+    fetchMovieCast.mockImplementation((movieId) => {
+        return Promise.resolve(mockFetchMovieCastDataCharacterActors[movieId])}
+    );
+
+    const result = await getCharactersWithMultipleActors(movies,actors);
+
+    //also tests split characters
+    expect(result).toEqual(characterActors);
+    expect(result["Char3"]).toBeUndefined();
+    expect(result["Char1"]).toHaveLength(3);
 });
 
 
