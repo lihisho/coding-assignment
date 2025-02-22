@@ -5,7 +5,7 @@ const {mockFetchMovieCastDataActorCharacters} = require("./mockData/mockFetchMov
 const {mockFetchMovieCastDataMoviesPerActorMissingMovie} = require("./mockData/mockFetchMovieCastDataMoviesPerActorMissingMovie");
 const {mockFetchMovieCastDataCharacterActors} = require("./mockData/mockFetchMovieCastDataCharacterActors");
 
-//refion setup
+//region setup
 const movies = {
     'Test movie 1': 1,
     'Test movie 2': 2,
@@ -23,7 +23,7 @@ jest.mock('../../src/dal/movieDal');
 //endregion
 
 //region tests
-test('fetches movies per actor', async () => {
+test('fetches movies per actor from Dal layer', async () => {
     const actorMovieMapping = {
         "actor 1":[
             "Test movie 1",
@@ -69,7 +69,7 @@ test('fetches movies per actor when one movie doesnt exist in data', async () =>
     expect(isError).toBeTruthy();
 });
 
-test('fetches actors with multiple characters', async () => {
+test('fetches actors with multiple characters from Dal layer', async () => {
     const actorCharacters = {
         "actor 1":[
             {movieName: "Test movie 1", characterName: "Char1"},
@@ -93,7 +93,7 @@ test('fetches actors with multiple characters', async () => {
     expect(result["actor 4"]).toBeUndefined();
 });
 
-test('fetches characters with multiple actors', async () => {
+test('fetches characters with multiple actors from Dal layer', async () => {
     const characterActors = {
         "Char1":[
             {movieName: "Test movie 1", actorName: "actor 1"},
@@ -117,6 +117,4 @@ test('fetches characters with multiple actors', async () => {
     expect(result["Char3"]).toBeUndefined();
     expect(result["Char1"]).toHaveLength(3);
 });
-
-
 //endregion
