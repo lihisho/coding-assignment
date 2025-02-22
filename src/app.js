@@ -1,9 +1,9 @@
 const express = require('express');
 const app = express();
 
-const actorRoutes = require('./routes/actors');
+const movieActorRoutes = require('./routes/movieActorRoutes');
 
-app.use('/', actorRoutes);
+app.use('/', movieActorRoutes);
 
 app.use((req, res, next) => {
     const error = new Error('Not Found');
@@ -12,8 +12,7 @@ app.use((req, res, next) => {
 })
 
 app.use((error, req, res, next) => {
-    res.status(error.status || 500);
-    res.json({
+    res.status(error.status || 500).json({
         message: error.message
     })
 })
